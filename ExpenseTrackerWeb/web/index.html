@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Expense Tracker</h1>
+      <p>Track, filter and understand your spending</p>
+    </div>
+    <button class="btn primary" id="addBtn">+ Add Expense</button>
+  </header>
+
+  <main>
+    <section class="cards">
+      <div class="card" style="--accent:var(--primary)"><span>Total (filtered)</span><strong id="totalLbl">₹0.00</strong></div>
+      <div class="card" style="--accent:var(--warning)"><span>This month</span><strong id="monthLbl">₹0.00</strong></div>
+      <div class="card" style="--accent:var(--success)"><span>Transactions</span><strong id="countLbl">0</strong></div>
+      <div class="card" id="budgetCard" style="--accent:var(--danger)">
+        <span>Monthly budget <button class="link" id="budgetBtn">Set</button></span>
+        <strong id="budgetLbl">Not set</strong>
+        <div class="bar"><div id="budgetFill"></div></div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="panel">
+        <div class="filters">
+          <input id="search" type="search" placeholder="Search title or note…">
+          <select id="categoryFilter"></select>
+          <select id="monthFilter"></select>
+          <a class="btn ghost" id="exportBtn" href="#">Export CSV</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-sort="date">Date</th>
+                <th data-sort="title">Title</th>
+                <th data-sort="category">Category</th>
+                <th data-sort="amount" class="num">Amount</th>
+                <th data-sort="note">Note</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <p id="empty" class="empty" hidden>No expenses match your filters.</p>
+        </div>
+      </div>
+
+      <aside class="panel chart-panel">
+        <h2>Spending by category</h2>
+        <div class="donut-wrap">
+          <svg id="donut" viewBox="0 0 200 200" role="img" aria-label="Spending by category"></svg>
+          <div class="donut-center"><span>Total</span><strong id="donutTotal">₹0</strong></div>
+        </div>
+        <ul id="legend" class="legend"></ul>
+      </aside>
+    </section>
+  </main>
+
+  <!-- Add / edit dialog -->
+  <dialog id="expenseDlg">
+    <form id="expenseForm" method="dialog">
+      <h2 id="dlgTitle">Add Expense</h2>
+      <label>Title<input name="title" required maxlength="80"></label>
+      <div class="row">
+        <label>Amount (₹)<input name="amount" type="number" min="0.01" step="0.01" required></label>
+        <label>Date<input name="date" type="date" required></label>
+      </div>
+      <label>Category<select name="category" required></select></label>
+      <label>Note<textarea name="note" rows="2" maxlength="200"></textarea></label>
+      <p class="form-error" id="formError" hidden></p>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Budget dialog -->
+  <dialog id="budgetDlg">
+    <form id="budgetForm" method="dialog">
+      <h2>Monthly budget</h2>
+      <label>Amount (₹) — 0 to remove<input name="amount" type="number" min="0" step="1" required></label>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="budgetCancel">Cancel</button>
+        <button type="submit" class="btn primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
